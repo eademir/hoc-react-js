@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import './App.css';
 import axios from 'axios'
 import Post from './components/posts'
+import User from './components/users'
 
 class App extends Component {
     constructor(props){
         super(props);
         this.state = {
             post: [],
-            loading: true,
+            user: []
         }
     }
     componentWillMount() {
@@ -19,10 +20,22 @@ class App extends Component {
                 setTimeout(
                     () =>{
                         this.setState({
-                            post,
-                            loading: false
+                            post
                         })
                     }, 2000
+                )
+            }
+        );
+        axios.get('https://jsonplaceholder.typicode.com/users').then(
+            user => user.data
+        ).then(
+            user => {
+                setTimeout(
+                    () =>{
+                        this.setState({
+                            user
+                        })
+                    }, 1000
                 )
             }
         )
@@ -31,6 +44,10 @@ class App extends Component {
     render() {
     return (
       <div className="App">
+          <User {...this.state}/>
+          <br/>
+          <hr/>
+          <br/>
           <Post {...this.state}/>
       </div>
     );
